@@ -15,9 +15,11 @@ export const GlobalContext = createContext({
   value: "expense",
   setValue: () => {},
   handleFormSubmit: () => {},
+  deleteTransaction: () => {},
 });
 
-export default function GlobalState({ children }) {  const [formData, setFormData] = useState({
+export default function GlobalState({ children }) {
+  const [formData, setFormData] = useState({
     type: "income",
     amount: 0,
     description: "",
@@ -54,7 +56,9 @@ export default function GlobalState({ children }) {  const [formData, setFormDat
     ]);
   }, [setAllTransactions]);
 
-  console.log(allTransactions);
+  const deleteTransaction = useCallback((id) => {
+    setAllTransactions(prev => prev.filter(transaction => transaction.id !== id));
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -70,6 +74,7 @@ export default function GlobalState({ children }) {  const [formData, setFormDat
         allTransactions,
         setAllTransactions,
         handleFormSubmit,
+        deleteTransaction,
       }}
     >
       {children}

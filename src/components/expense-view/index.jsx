@@ -1,9 +1,10 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, IconButton } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/index.jsx";
 
 export default function ExpenseView() {
-  const { allTransactions } = useContext(GlobalContext);
+  const { allTransactions, deleteTransaction } = useContext(GlobalContext);
 
   const expenseTransactions = allTransactions.filter(
     (item) => item.type === "expense"
@@ -45,9 +46,19 @@ export default function ExpenseView() {
                   {new Date(item.id).toLocaleDateString()}
                 </Text>
               </Flex>
-              <Text color={`${colorScheme}.500`} fontWeight="bold">
-                R {item.amount}
-              </Text>
+              <Flex alignItems="center" gap={4}>
+                <Text color={`${colorScheme}.500`} fontWeight="bold">
+                  R {item.amount}
+                </Text>
+                <IconButton
+                  icon={<DeleteIcon />}
+                  colorScheme={colorScheme}
+                  variant="ghost"
+                  size="sm"
+                  aria-label="Delete transaction"
+                  onClick={() => deleteTransaction(item.id)}
+                />
+              </Flex>
             </Flex>
           ))
         ) : (
